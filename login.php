@@ -1,5 +1,4 @@
 <?php
-//kommentaar
 require("../../config.php");
 require("functions.php");
 //muutujad
@@ -30,7 +29,6 @@ if(isset($_POST["gender"])){
 		$gender = $_POST["gender"];
 	}
 }
-
 
 if( isset($_POST["firstname"]) ){
 	//TRUE pärast nupule vajutamist
@@ -76,7 +74,8 @@ if( isset($_POST["firstname"]) ){
 			$passwordError = "Salasõna peab olema vähemalt 8 tähemärki";
 		} else {
 			if($_POST["password"] == $_POST["passwordAgain"]){
-				$password = hash("sha512", $_POST["password"]);
+				$password = cleanInput($_POST["password"]);
+				$password = hash("sha512", $password);
 			}
 		}
 	}
@@ -99,7 +98,7 @@ if( isset($_POST["firstname"]) &&
 	empty($passwordAgainError) &&
 	empty($emailError) ) {
 		
-// andmed
+// AJUTINE
 	echo "Salvestan... <br>";
 	echo "Nimi: ". $firstname . " " . $lastname . "<br>";	
 	echo "E-post: ". $email . "<br>";
@@ -123,7 +122,7 @@ if(isset($_POST["loginEmail"]) && isset($_POST["loginPassword"]) &&
 		$loginPassword = cleanInput($_POST["loginPassword"]);
 		$loginError = login($loginEmail, $loginPassword);   //kutsun funktsiooni
 }
-
+ 
  //Kuude massiiv
 $m = array("jaanuar","veebruar","märts","aprill","mai","juuni","juuli","august","september","oktoober","november","detsember"); 
 
@@ -191,8 +190,7 @@ for($i=0;$i<18;$i++) { ?>
 } ?>
 <br>
 </select>
-<input type="submit" value="Vali">
-</form>
+
 <br>
 <br>
 <!--Kontaktandmed -->
@@ -200,8 +198,8 @@ for($i=0;$i<18;$i++) { ?>
 <form method="post">
 <input name="firstname" type="text" placeholder="Eesnimi"> <?php echo $firstnameError; ?> <br>
 <input name="lastname" type="text" placeholder="Perekonnanimi"> <?php echo $lastnameError; ?> <br>
-<input name="address" type="textarea" placeholder="Tänav maja nr/ krt"> <?php echo $addressError; ?> <br>
-<input name="city" type="textarea" placeholder="Linn/asula"> <?php echo $cityError; ?> <br>
+<input name="address" type="text" placeholder="Tänav maja nr/ krt"> <?php echo $addressError; ?> <br>
+<input name="city" type="text" placeholder="Linn/asula"> <?php echo $cityError; ?> <br>
 <input name="zip" type="text" placeholder="Sihtnumber"> <?php echo $zipError; ?> <br>
 <input name="email" type="text" placeholder="E-post"> <?php echo $emailError; ?> <br> 
 <input name="password" type="password" placeholder="Salasõna"> <?php echo $passwordError; ?> <br>
@@ -231,6 +229,8 @@ Määramata<input name="gender" type="radio" value="none" checked>
 <?php } else {?>
 Määramata<input name="gender" type="radio" value="none">
 <?php } ?>
+
+
 
 <br>
 <br>

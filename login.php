@@ -20,7 +20,7 @@ $emailError = "";
 $addressError = "";
 $zipError = "";
 $cityError = "";
-
+$orderError = "";
 $passwordError = "";
 $passwordAgainError = "";
 
@@ -94,19 +94,33 @@ if( isset($_POST["firstname"]) ){
 if( isset($_POST["firstname"]) &&
 	empty($firstnameError) &&
 	empty($lastnameError) &&
+	empty($addressError) &&
+	empty($cityError) &&
+	empty($zipError) &&
+	empty($emailError) &&
 	empty($passwordError) &&
 	empty($passwordAgainError) &&
-	empty($emailError) ) {
+	empty($orderError)) {
 		
-// AJUTINE
-	echo "Salvestan... <br>";
-	echo "Nimi: ". $firstname . " " . $lastname . "<br>";	
-	echo "E-post: ". $email . "<br>";
-	echo "Aadress: ". $address . " " . $city . "," . $zip . "<br>";	
-	$password = hash("sha512", $_POST["password"]);	
-	//echo "password hashed: ". $password . "<br>";
-	
-	signUp($firstname, $lastname, $email, $password, $address, $city, $zip);
+	//kontrollin tellimuse perioodi
+	$orderFrom = date_create($_POST["from"]);
+	$orderTo = date_create($_POST["until"]);
+	if($orderFrom > $orderTo){
+		$orderError = "Kontrollige tellimuse perioodi";
+		echo $orderError;
+	}else{
+		$diff = date_diff($orderFrom, $orderTo);
+		//$diff= $diff->format("%m") + 1;
+		$diff = (($diff->format('%y') * 12) + $diff->format('%m'));
+		echo "Tellimuse periood kuudes: ";
+		echo $diff + 1 . ", hind: " . 5* ($diff +1) . "€ <br>";
+		echo "Nimi: ". $firstname . " " . $lastname . "<br>";	
+		echo "E-post: ". $email . "<br>";
+		echo "Aadress: ". $address . " " . $city . ", " . $zip . "<br>";	
+		$password = hash("sha512", $_POST["password"]);	
+		//echo "password hashed: ". $password . "<br>";
+		signUp($firstname, $lastname, $email, $password, $address, $city, $zip);
+	}
 }
 
 /*

@@ -210,12 +210,12 @@ for($i=0;$i<18;$i++) { ?>
 <!--Kontaktandmed -->
 <h3>Tellija andmed</h3>
 <form method="post">
-<input name="firstname" type="text" placeholder="Eesnimi"> <?php echo $firstnameError; ?> <br>
-<input name="lastname" type="text" placeholder="Perekonnanimi"> <?php echo $lastnameError; ?> <br>
-<input name="address" type="text" placeholder="Tänav maja nr/ krt"> <?php echo $addressError; ?> <br>
-<input name="city" type="text" placeholder="Linn/asula"> <?php echo $cityError; ?> <br>
-<input name="zip" type="text" placeholder="Sihtnumber"> <?php echo $zipError; ?> <br>
-<input name="email" type="text" placeholder="E-post"> <?php echo $emailError; ?> <br> 
+<input name="firstname" type="text" placeholder="Eesnimi" value="<?=$firstname;?>"> <?php echo $firstnameError; ?> <br>
+<input name="lastname" type="text" placeholder="Perekonnanimi" value="<?=$lastname;?>"> <?php echo $lastnameError; ?> <br>
+<input name="address" type="text" placeholder="Tänav maja nr/ krt" value="<?=$address;?>"> <?php echo $addressError; ?> <br>
+<input name="city" type="text" placeholder="Linn/asula" value="<?=$city;?>"> <?php echo $cityError; ?> <br>
+<input name="zip" type="text" placeholder="Sihtnumber" value="<?=$zip;?>"> <?php echo $zipError; ?> <br>
+<input name="email" type="text" placeholder="E-post" value="<?=$email;?>"> <?php echo $emailError; ?> <br> 
 <input name="password" type="password" placeholder="Salasõna"> <?php echo $passwordError; ?> <br>
 <input name="passwordAgain" type="password" placeholder="Salasõna uuesti"> <?php echo $passwordAgainError; ?> <br>
 <br>

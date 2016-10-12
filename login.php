@@ -1,5 +1,5 @@
 <?php
-require("../../config.php");
+
 require("functions.php");
 //muutujad
 $firstname = "";
@@ -20,7 +20,7 @@ $emailError = "";
 $addressError = "";
 $zipError = "";
 $cityError = "";
-$orderError = "";
+
 $passwordError = "";
 $passwordAgainError = "";
 
@@ -99,29 +99,10 @@ if( isset($_POST["firstname"]) &&
 	empty($zipError) &&
 	empty($emailError) &&
 	empty($passwordError) &&
-	empty($passwordAgainError) &&
-	empty($orderError)) {
-		
-	//kontrollin tellimuse perioodi
-	$orderFrom = date_create($_POST["from"]);
-	$orderTo = date_create($_POST["until"]);
-	if($orderFrom > $orderTo){
-		$orderError = "Kontrollige tellimuse perioodi";
-		echo $orderError;
-	}else{
-		$diff = date_diff($orderFrom, $orderTo);
-		//$diff= $diff->format("%m") + 1;
-		$diff = (($diff->format('%y') * 12) + $diff->format('%m'));
-		echo "Tellimuse periood kuudes: ";
-		echo $diff + 1 . ", hind: " . 5* ($diff +1) . "€ <br>";
-		echo "Nimi: ". $firstname . " " . $lastname . "<br>";	
-		echo "E-post: ". $email . "<br>";
-		echo "Aadress: ". $address . " " . $city . ", " . $zip . "<br>";	
-		$password = hash("sha512", $_POST["password"]);	
-		//echo "password hashed: ". $password . "<br>";
-		signUp($firstname, $lastname, $email, $password, $address, $city, $zip);
+	empty($passwordAgainError)
+	) {
+		signUp($firstname, $lastname,  $gender, $address, $city, $zip, $email, $password);
 	}
-}
 
 /*
 ******************
@@ -136,19 +117,6 @@ if(isset($_POST["loginEmail"]) && isset($_POST["loginPassword"]) &&
 		$loginPassword = cleanInput($_POST["loginPassword"]);
 		$loginError = login($loginEmail, $loginPassword);   //kutsun funktsiooni
 }
- 
- //Kuude massiiv
-$m = array("jaanuar","veebruar","märts","aprill","mai","juuni","juuli","august","september","oktoober","november","detsember"); 
-
-//enne 20.kuupäeva tellimus alates järgmisest kuust, muul juhul alates ülejärgmisest kuust
-if (date("d") > 20
- ){
-	$fromMonth = $untilMonth = date('n', strtotime("+2 Months"));
-	$fromYear = $untilYear = date('Y', strtotime("+2 Months"));
-}else {
-	$fromMonth = $untilMonth = date('n', strtotime("+1 Months"));
-	$fromYear = $untilYear = date('Y', strtotime("+1 Months"));
-}
 ?>
 
 
@@ -158,6 +126,7 @@ if (date("d") > 20
 <title>Ajakirja tellimine</title>
 </head>
 <body>
+<h4>Tellimiseks ja tellimuste vaatamiseks logi sisse</h4>
 <form method="post">
 <p style="color:red;"><?php echo $loginError; ?></p>
 <input name="loginEmail" type="text" placeholder="E-post">  
@@ -171,44 +140,9 @@ if (date("d") > 20
 <br>
 <br>
 
-<!--Tellimuse periood -->
-Alates:
-<select name="from">
-<?php 
-for($i=0;$i<6;$i++) { ?>
-	<option value="<?=$fromYear ."-".$fromMonth ."-1";?>"><?php echo $m[$fromMonth - 1]." ".$fromYear;?></option>
-<?php	
- if($fromMonth == 12) { 
-		$fromMonth = 1; 
-        $fromYear++; 
-     } else { 
-        $fromMonth++; 
-     } 
-} ?>
-</select>
- 
 
-<!-- kuni -->
-Kuni(k.a):
-<select name="until">
-<?php 
-for($i=0;$i<18;$i++) { ?>
-	<option value="<?=$untilYear ."-".$untilMonth ."-30";?>"><?php echo $m[$untilMonth - 1]." ".$untilYear;?></option>
-<?php 
-	if($untilMonth == 12) { 
-		$untilMonth = 1; 
-        $untilYear++; 
-     } else { 
-        $untilMonth++; 
-     } 
-} ?>
-<br>
-</select>
-
-<br>
-<br>
 <!--Kontaktandmed -->
-<h3>Tellija andmed</h3>
+<h4>Loo kasutaja</h4>
 <form method="post">
 <input name="firstname" type="text" placeholder="Eesnimi" value="<?=$firstname;?>"> <?php echo $firstnameError; ?> <br>
 <input name="lastname" type="text" placeholder="Perekonnanimi" value="<?=$lastname;?>"> <?php echo $lastnameError; ?> <br>
@@ -248,7 +182,7 @@ Määramata<input name="gender" type="radio" value="none">
 
 <br>
 <br>
-<input type="submit" value="Telli">
+<input type="submit" value="Loo kasutaja">
 </form>
 </body>
 </html>

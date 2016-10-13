@@ -7,6 +7,19 @@ require("functions.php");
 //veateated
 $orderError = "";
 
+//kui id'd ei ole, siis suunatakse sisselogimise lehele
+if(!isset ($_SESSION["userId"])){
+	header("Location: login.php");
+	exit();                      
+}
+
+//kui on ?logout aadressireal, siis sessioon lõpetatakse ja suunatakse sisselogimise lehele
+if (isset($_GET["logout"])) {
+	session_destroy();
+	header("Location: login.php");
+	exit();
+}
+
 //Kuude massiiv
 $m = array("jaanuar","veebruar","märts","aprill","mai","juuni","juuli","august","september","oktoober","november","detsember"); 
 
@@ -48,6 +61,9 @@ if(isset($_POST["from"])){
 <title>Sisse loginud</title>
 </head>
 <body>
+<a href="?logout=1">Logi välja</a>
+
+<p>Tere tulemast <?=$_SESSION["userName"];?>!</p><br>
 
 <p>Soovin tellida ajakirja:</p>
 <!--Tellimuse periood -->

@@ -1,6 +1,16 @@
 <?php
 
 require("functions.php");
+
+// kui on juba sisse loginud siis suunan data lehele
+if (isset($_SESSION["userId"])){
+		
+		//suunan sisselogimise lehele
+		header("Location: data.php");
+		exit();
+		
+}
+
 //muutujad
 $firstname = "";
 $lastname = "";
@@ -109,7 +119,7 @@ if( isset($_POST["firstname"]) &&
          LOGIN   *
 ******************
 */
-
+$loginError = "";
 if(isset($_POST["loginEmail"]) && isset($_POST["loginPassword"]) &&
 !empty($_POST["loginEmail"]) && !empty($_POST["loginPassword"])) {
 		

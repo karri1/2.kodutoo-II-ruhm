@@ -2,7 +2,7 @@
 
 require("functions.php");
 //muutujad
-
+$note = "Telli ajakiri: ";
 
 //veateated
 $orderError = "";
@@ -47,8 +47,11 @@ if(isset($_POST["from"])){
 			$diff = date_diff($orderFrom, $orderTo);
 			//$diff= $diff->format("%m") + 1;
 			$diff = (($diff->format('%y') * 12) + $diff->format('%m'));
-			echo "Tellimuse periood kuudes: ";
-			echo $diff + 1 . ", hind: " . 5* ($diff +1) . "€";
+			$note = "Tellimuse periood kuudes: ";
+			$note .= $diff + 1 . ", hind: " . 5* ($diff +1) . "€<br>";  
+			$orderFrom = $orderFrom->format("Y-m-d");
+			$orderTo = $orderTo->format("Y-m-d");
+			$note .= placeOrder($orderFrom, $orderTo);  //funktsioon tellimuse andmebaasi lisamiseks
 			
 		}
 	}
@@ -65,7 +68,7 @@ if(isset($_POST["from"])){
 
 <p>Tere tulemast <?=$_SESSION["userName"];?>!</p><br>
 
-<p>Soovin tellida ajakirja:</p>
+<p><?=$note;?></p>
 <!--Tellimuse periood -->
 <form method="post">
 <!--alates -->
@@ -85,7 +88,7 @@ for($i=0;$i<6;$i++) { ?>
 </select>
  
 <!-- kuni -->
-&nbsp kuni(k.a):       <!-- õppisin tühiku panemist :P -->
+&nbsp kuni(k.a):      
 <select name="until">
 <?php 
 for($i=0;$i<18;$i++) { ?>
@@ -102,6 +105,7 @@ for($i=0;$i<18;$i++) { ?>
 </select>
 <input type="submit" value="Telli">
 </form>
+
 
 
 </body>

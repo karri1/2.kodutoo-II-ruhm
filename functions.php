@@ -76,4 +76,26 @@ function login($email, $password){
 		
 	return $error;
 }
+
+//TELLIMUS ANDMEBAASI
+function placeOrder($orderFrom, $orderTo){
+	$database = "if16_karin";
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+		
+	$stmt = $mysqli->prepare("INSERT INTO orders_katse (Alates, Kuni, User_id) VALUES (?, ?, ?)");
+	echo $mysqli -> error;   
+		
+	$stmt -> bind_param("sss", $orderFrom, $orderTo, $_SESSION["userId"] ); 
+
+	if ($stmt->execute()) {
+		$note = "<br> Tellimus vastu võetud <br> <br>";
+	} else {
+		$note = "ERROR ".$stmt->error;
+	}
+	return $note;	
+		
+	$stmt->close();
+	$mysqli->close();
+	
+}
 ?>

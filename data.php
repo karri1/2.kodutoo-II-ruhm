@@ -105,7 +105,28 @@ for($i=0;$i<18;$i++) { ?>
 </select>
 <input type="submit" value="Telli">
 </form>
-
+<!--Olemasolevad tellimused-->
+ <p>Sinu tellimused</p>
+ <?php
+ $userOrders = getData($_SESSION["userId"]);
+ 
+ $html = "<table style='border: 1px solid black';>";
+	$html .= "<tr>";
+		$html .= "<th style='border: 1px solid black';>Tellimuse nr</th>";
+		$html .= "<th style='border: 1px solid black';>Algus</th>";
+		$html .= "<th style='border: 1px solid black';>Lõpp</th>";
+	$html .= "</tr>";
+	
+	foreach($userOrders as $o){
+		$html .= "<tr >";
+		$html .= "<td style='border: 1px solid black';>" . $o->Tellimuse_nr . "</td>";
+		$html .= "<td style='border: 1px solid black';>" . $o->Alates . "</td>";
+		$html .= "<td style='border: 1px solid black'; >" . $o->Kuni . "</td>"; 
+		$html .= "</tr>";
+	}
+ $html .= "</table>";
+ echo $html;
+ ?>
 
 
 </body>

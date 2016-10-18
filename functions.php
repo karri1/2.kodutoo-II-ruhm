@@ -98,4 +98,41 @@ function placeOrder($orderFrom, $orderTo){
 	$mysqli->close();
 	
 }
+
+//VAATA TELLIMUST
+function getData($user_id) {
+		
+	$database = "if16_karin";
+	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
+		
+	$stmt = $mysqli->prepare("SELECT Order_id, Alates, Kuni FROM orders_katse WHERE User_id=?");
+	echo $mysqli->error;
+	$stmt->bind_param('i' , $user_id);
+	$stmt->bind_result($order_idDB, $alatesDB, $kuniDB);
+	$stmt->execute();
+	
+	//tekitan massiivi
+	$allUserOrders = array();
+	
+		while($stmt->fetch()){
+			//$alates = date_create($alatesDB)  ... see on  object(DateTime)
+			//$alates->format("m/Y")    ....m/Y formaati: 
+			
+			$alates = date_create($alatesDB)->format("m/Y") ;    
+			$kuni = date_create($kuniDB)->format("m/Y");
+			
+			$order = new StdClass();
+			$order->Tellimuse_nr = $order_idDB;
+			$order->Alates = $alates;
+			$order->Kuni = $kuni;
+			array_push($allUserOrders, $order);	
+		}
+	
+	return $allUserOrders;
+			
+	$stmt->close();
+	$mysqli->close();
+		
+		
+}	
 ?>

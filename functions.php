@@ -78,6 +78,7 @@ function login($email, $password){
 }
 
 //TELLIMUS ANDMEBAASI
+//iga kord kui kasutaja värskendab lehte, saadetakse sama tellimus uuesti. Ei oska parandada olukorda
 function placeOrder($orderFrom, $orderTo){
 	$database = "if16_karin";
 	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);

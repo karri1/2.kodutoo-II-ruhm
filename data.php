@@ -19,7 +19,8 @@ if (isset($_GET["logout"])) {
 	header("Location: login.php");
 	exit();
 }
-
+//dropdown kuude/aastate valiku tegemiseks lähtusin siit leitud õpetusest:
+// http://forums.codewalkers.com/php-coding-7/dynamic-month-year-dropdown-box-997827.html
 //Kuude massiiv
 $m = array("jaanuar","veebruar","märts","aprill","mai","juuni","juuli","august","september","oktoober","november","detsember"); 
 
@@ -43,7 +44,8 @@ if(isset($_POST["from"])){
 		if($orderFrom > $orderTo){
 			echo "Tellimuse periood ei saa lõppeda varem, kui algab";
 		}else{
-			//echo $orderFrom ."...".$orderTo;
+			//tellimuse perioodi arvutamisel lähtusin sellest õpetusest:  
+			// http://stackoverflow.com/questions/2681548/find-month-difference-in-php
 			$diff = date_diff($orderFrom, $orderTo);
 			//$diff= $diff->format("%m") + 1;
 			$diff = (($diff->format('%y') * 12) + $diff->format('%m'));
@@ -69,7 +71,7 @@ if(isset($_POST["from"])){
 <p>Tere tulemast <?=$_SESSION["userName"];?>!</p><br>
 
 <p><?=$note;?></p>
-<!--Tellimuse periood -->
+<!--Tellimuse periood... EI OSKA TEHA NII, ET VALIK PÄRAST SUBMIT VAJUTAMIST NÄHA JÄÄKS-->
 <form method="post">
 <!--alates -->
 alates:

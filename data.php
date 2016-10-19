@@ -53,7 +53,7 @@ if(isset($_POST["from"])){
 			$note .= $diff + 1 . ", hind: " . 5* ($diff +1) . "€<br>";  
 			$orderFrom = $orderFrom->format("Y-m-d");
 			$orderTo = $orderTo->format("Y-m-d");
-			$note .= placeOrder($orderFrom, $orderTo);  //funktsioon tellimuse andmebaasi lisamiseks
+			$note .= placeOrder($orderFrom, $orderTo, $_SESSION["userId"]);  //funktsioon tellimuse andmebaasi lisamiseks
 			
 		}
 	}

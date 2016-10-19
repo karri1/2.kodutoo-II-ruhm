@@ -78,11 +78,22 @@ function login($email, $password){
 }
 
 //TELLIMUS ANDMEBAASI
-//iga kord kui kasutaja värskendab lehte, saadetakse sama tellimus uuesti. Ei oska parandada olukorda
-function placeOrder($orderFrom, $orderTo){
+
+function placeOrder($orderFrom, $orderTo, $userId){
 	$database = "if16_karin";
 	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
-		
+	
+	//kontrollin ega samasugust tellimust samalt kasutajalt juba pole
+	$stmt = $mysqli->prepare("SELECT Alates, Kuni, User_id FROM orders_katse WHERE Alates = ? AND Kuni = ? AND User_id = ? ");
+	$stmt -> bind_param("ssi", $orderFrom, $orderTo, $userId);
+	$stmt -> bind_result($orderFromDB, $orderToDB, $userIdDB); 
+	$stmt -> execute();
+	if ($stmt->fetch()) {
+		// pärast returni midagi edasi ei tehta funktsioonis
+		return;
+	}
+	$stmt -> close();
+	//tellimus andmebaasi	
 	$stmt = $mysqli->prepare("INSERT INTO orders_katse (Alates, Kuni, User_id) VALUES (?, ?, ?)");
 	echo $mysqli -> error;   
 		

@@ -15,7 +15,7 @@ function signUp($firstname, $lastname,  $gender, $address, $city, $zip, $email, 
 	$database = "if16_karin";
 	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 		
-	$stmt = $mysqli->prepare("INSERT INTO users_katse (Eesnimi, Perekonnanimi, Sugu, Aadress, Asula, Sihtnumber, Email, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+	$stmt = $mysqli->prepare("INSERT INTO users_katse (Firstname, Lastname, Gender, Address, City, Zipcode, Email, Password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 	echo $mysqli -> error;   
 		
 	$stmt -> bind_param("ssssssss", $firstname, $lastname, $gender, $address, $city, $zip, $email, $password ); 
@@ -39,7 +39,7 @@ function login($email, $password){
 	
 	$database = "if16_karin";
 	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
-		$stmt = $mysqli->prepare("SELECT id, Eesnimi, Email, Password FROM users_katse WHERE Email = ?");
+		$stmt = $mysqli->prepare("SELECT id, Firstname, Email, Password FROM users_katse WHERE Email = ?");
 	
 	echo $mysqli->error;
 		
@@ -64,7 +64,7 @@ function login($email, $password){
 			header("Location: data.php");                     
 			exit();
 		}else {
-			$error = "vale parool";
+			$error = "Vale parool";
 		}
 			
 			
@@ -84,7 +84,7 @@ function placeOrder($orderFrom, $orderTo, $userId){
 	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 	
 	//kontrollin ega samasugust tellimust samalt kasutajalt juba pole
-	$stmt = $mysqli->prepare("SELECT Alates, Kuni, User_id FROM orders_katse WHERE Alates = ? AND Kuni = ? AND User_id = ? ");
+	$stmt = $mysqli->prepare("SELECT Date_from, Date_to, User_id FROM orders_katse WHERE Date_from = ? AND Date_to = ? AND User_id = ? ");
 	$stmt -> bind_param("ssi", $orderFrom, $orderTo, $userId);
 	$stmt -> bind_result($orderFromDB, $orderToDB, $userIdDB); 
 	$stmt -> execute();
@@ -94,7 +94,7 @@ function placeOrder($orderFrom, $orderTo, $userId){
 	}
 	$stmt -> close();
 	//tellimus andmebaasi	
-	$stmt = $mysqli->prepare("INSERT INTO orders_katse (Alates, Kuni, User_id) VALUES (?, ?, ?)");
+	$stmt = $mysqli->prepare("INSERT INTO orders_katse (Date_from, Date_to, User_id) VALUES (?, ?, ?)");
 	echo $mysqli -> error;   
 		
 	$stmt -> bind_param("sss", $orderFrom, $orderTo, $_SESSION["userId"] ); 
@@ -117,10 +117,10 @@ function getData($user_id) {
 	$database = "if16_karin";
 	$mysqli = new mysqli($GLOBALS["serverHost"], $GLOBALS["serverUsername"], $GLOBALS["serverPassword"], $database);
 		
-	$stmt = $mysqli->prepare("SELECT Order_id, Alates, Kuni FROM orders_katse WHERE User_id=?");
+	$stmt = $mysqli->prepare("SELECT Order_id, Date_from, Date_to FROM orders_katse WHERE User_id=?");
 	echo $mysqli->error;
 	$stmt->bind_param('i' , $user_id);
-	$stmt->bind_result($order_idDB, $alatesDB, $kuniDB);
+	$stmt->bind_result($order_idDB, $fromDB, $toDB);
 	$stmt->execute();
 	
 	//tekitan massiivi
@@ -130,13 +130,13 @@ function getData($user_id) {
 			//$alates = date_create($alatesDB)  ... see on  object(DateTime)
 			//$alates->format("m/Y")    ....m/Y formaati: 
 			
-			$alates = date_create($alatesDB)->format("m/Y") ;    
-			$kuni = date_create($kuniDB)->format("m/Y");
+			$from = date_create($fromDB)->format("m/Y") ;    
+			$to = date_create($toDB)->format("m/Y");
 			
 			$order = new StdClass();
-			$order->Tellimuse_nr = $order_idDB;
-			$order->Alates = $alates;
-			$order->Kuni = $kuni;
+			$order->Order_nr = $order_idDB;
+			$order->From= $from;
+			$order->To = $to;
 			array_push($allUserOrders, $order);	
 		}
 	

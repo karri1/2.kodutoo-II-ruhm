@@ -20,10 +20,10 @@ $zip = "";
 $email = "";
 $password = "";
 $gender = "";
-
+$loginEmail = "";
 //veateated
 $loginError = "";
-
+$loginEmailError = $loginPasswordError = "";
 $firstnameError = "";
 $lastnameError = "";
 $emailError = "";
@@ -127,6 +127,18 @@ if(isset($_POST["loginEmail"]) && isset($_POST["loginPassword"]) &&
 		$loginPassword = cleanInput($_POST["loginPassword"]);
 		$loginError = login($loginEmail, $loginPassword);   //kutsun funktsiooni
 }
+if(isset($_POST["loginEmail"])){
+	if(empty($_POST["loginEmail"])){
+		$loginEmailError = "Kohustuslik väli";
+	}else{
+		$loginEmail = $_POST["loginEmail"];
+	}
+}
+if(isset($_POST["loginPassword"] )){
+	if(empty($_POST["loginPassword"])){
+		$loginPasswordError = "Kohustuslik väli";
+	}
+}
 ?>
 
 
@@ -139,9 +151,9 @@ if(isset($_POST["loginEmail"]) && isset($_POST["loginPassword"]) &&
 <h4>Tellimiseks ja tellimuste vaatamiseks logi sisse</h4>
 <form method="post">
 <p style="color:red;"><?php echo $loginError; ?></p>
-<input name="loginEmail" type="text" placeholder="E-post">  
+<input name="loginEmail" type="text" placeholder="E-post" value="<?=$loginEmail;?>">  <?php echo $loginEmailError; ?>
 <br>
-<input name="loginPassword" type="password" placeholder="Salasõna">
+<input name="loginPassword" type="password" placeholder="Salasõna"> <?php echo $loginPasswordError; ?>
 <br>
 <br>
 <input name="login" type="submit" value="Logi sisse">

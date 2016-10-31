@@ -121,9 +121,9 @@ for($i=0;$i<18;$i++) { ?>
 	
 	foreach($userOrders as $o){
 		$html .= "<tr >";
-		$html .= "<td style='border: 1px solid black';>" . $o->Tellimuse_nr . "</td>";
-		$html .= "<td style='border: 1px solid black';>" . $o->Alates . "</td>";
-		$html .= "<td style='border: 1px solid black'; >" . $o->Kuni . "</td>"; 
+		$html .= "<td style='border: 1px solid black';>" . $o->Order_nr . "</td>";
+		$html .= "<td style='border: 1px solid black';>" . $o->From . "</td>";
+		$html .= "<td style='border: 1px solid black'; >" . $o->To . "</td>"; 
 		$html .= "</tr>";
 	}
  $html .= "</table>";
